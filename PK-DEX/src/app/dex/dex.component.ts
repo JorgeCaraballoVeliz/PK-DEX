@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
-import { DexGetService } from '../services/dex-get.service';
+import { DexGetService, UserInfoResponse } from '../services/dex-get.service';
 
 @Component({
   selector: 'app-dex',
@@ -9,6 +9,8 @@ import { DexGetService } from '../services/dex-get.service';
 })
 export class DexComponent /*implements OnInit*/ {
   private dexService: DexGetService = inject(DexGetService);
+  //outputDex!: UserInfoResponse;
+  outputDex!: string;
 /* //peticion en el propio componente, no recomendado
   private httpClient = inject(HttpClient);
   ngOnInit(): void {
@@ -22,7 +24,9 @@ export class DexComponent /*implements OnInit*/ {
 
   dexData(): void {
     this.dexService.getDexInfo('xerneas').subscribe({
-      next: (response) => {
+      next: (response: string) => {
+        //console.log(response.name, response.types[0]);
+        this.outputDex = response;
         console.log(response);
       }
     })

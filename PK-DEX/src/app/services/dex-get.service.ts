@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 
 const PATH_URL = 'https://pokeapi.co';
 
@@ -13,8 +13,12 @@ export class DexGetService {
 
   constructor() { }
 
-  getDexInfo(name: string): Observable<UserInfoResponse> {
-   return this.httpClient.get<UserInfoResponse>(PATH_URL + '/api/v2/pokemon/' + name)
+  getDexInfo(name: string): Observable<string> {
+   return this.httpClient
+   .get<UserInfoResponse>(PATH_URL + '/api/v2/pokemon/' + name)
+   .pipe(
+    map((res: UserInfoResponse) => res.name)
+   )
     // return of();
   }
 }
@@ -32,4 +36,18 @@ export interface UserInfoResponse {
   id: number;
   title: string;
   userid: number;
+  name: string;
+  types: string;
+  type: string;
 }
+
+/*
+getDexInfo(name: string): Observable<UserInfoResponse> {
+   return this.httpClient.get<UserInfoResponse>(PATH_URL + '/api/v2/pokemon/' + name).pipe(tap({
+    next:(response) => {
+      console.log('CAPTURED IN SERVICE', response)
+    }
+   }))
+    // return of();
+  }
+*/
